@@ -5,15 +5,16 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-
-import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
+
+import HomePage from './pages/HomePage/HomePage';
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <HashRouter>
         <Routes>
-          <Route path="/" element={<App />}/>
+          <Route path="/" element={<HomePage />}/>
         </Routes>
     <React.StrictMode></React.StrictMode>
   </HashRouter>,
