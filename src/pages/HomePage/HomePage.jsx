@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 
 function HomePage({userId}) {
     const [data, setData] = useState(null);
-    useEffect(() => {
-        fetch(`http://localhost:3001/api/users-template/${userId}`)
+    const [loading, setLoading] = useState(true);
+
+    /*useEffect(() => {
+        //fetch(`http://localhost:3001/api/users-template/${userId}`)
+        fetch(`http://localhost:3001/api/templates`)
           .then((response) => response.json())
           .then((data) => setData(data))
           .catch(() => {
@@ -11,19 +14,39 @@ function HomePage({userId}) {
             setData({});
           });
     }, [userId]);
+    */
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3001/api/templates`);
+                const result = await response.json();
+                setData(result);
+            } catch (error) {
+                console.error("Erreur lors du chargement des données :", error);
+                setData({});
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [userId]);
+
+    //console.log(data)
 
     // Valeurs par défaut
     const defaultData = {
         headerColor: "#f0f0f0",
-        headerTitle: "Bienvenue sur mon site",
-        mainContent: "Contenu par défaut en cours de chargement.",
+        name: "Bienvenue sur mon site",
+        data_00: "Contenu par défaut en cours de chargement.",
         footerContent: "© 2025 Mon Site",
     };
 
     const finalData = {
         headerColor: data?.headerColor ?? defaultData.headerColor,
-        headerTitle: data?.headerTitle ?? defaultData.headerTitle,
-        mainContent: data?.mainContent ?? defaultData.mainContent,
+        name: Array.isArray(data) && data.length > 0 ? data[2]?.name : defaultData.name,
+        data_00: Array.isArray(data) && data.length > 0 ? data[2]?.data_00 : defaultData.data_00,
         footerContent: data?.footerContent ?? defaultData.footerContent,
     };
 
@@ -32,10 +55,10 @@ function HomePage({userId}) {
     return (
         <div>
             <header style={{ backgroundColor: finalData.headerColor }}>
-                <h1>{finalData.headerTitle}</h1>
+                <h1>{finalData.name}</h1>
             </header>
             <main>
-                <p>{finalData.mainContent}</p>
+                <p>{finalData.data_00}</p>
             </main>
             <footer>
                 <p>{finalData.footerContent}</p>

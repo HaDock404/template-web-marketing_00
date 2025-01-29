@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <HashRouter>
         <Routes>
-          <Route path="/" element={<HomePage />}/>
+          <Route path="/" element={<HomePage userId={0}/>}/>
         </Routes>
     <React.StrictMode></React.StrictMode>
   </HashRouter>,
